@@ -33,7 +33,7 @@ resource "azurerm_subnet" "service" {
 
   
 }
-
+# Criação do endpoint
 resource "azurerm_subnet" "endpoint" {
   name                 = "endpoint"
   resource_group_name  = azurerm_resource_group.resource_group1.name
@@ -78,7 +78,7 @@ resource "azurerm_private_link_service" "link_privado" {
     azurerm_lb.lb_azure.frontend_ip_configuration[0].id,
   ]
 }
-
+# Endpoint privado para restrição de rede 
 resource "azurerm_private_endpoint" "endpoint_privado" {
   name                = "endpoint-privado"
   location            = azurerm_resource_group.resource_group1.location
@@ -92,3 +92,17 @@ resource "azurerm_private_endpoint" "endpoint_privado" {
   }
 }
 
+# Configuração de Runtime de integração no ADF para permitir execução de pipelines dentro de uma rede privada
+resource "azurerm_data_factory" "adf_privado" {
+  name                = "adf-privado"
+  location            = azurerm_resource_group.resource_group1.location
+  resource_group_name = azurerm_resource_group.resource_group1.name
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+resource "azurerm_data_factory_integration_runtime_self_hosted" "irsh_private" {
+  name                = "irsh-private"
+  data_factory_id = azurerm_data_factory.adf_privado.id
+}
