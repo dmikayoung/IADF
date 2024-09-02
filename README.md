@@ -15,3 +15,5 @@ Terraform destroy: Mostra em tela os recursos que serão destruidos, após a con
 
 # Verificar a configuração dos componentes.
 Para a verificação da criação de um grupo de recursos, por exemplo, pode ser feito com o comando "terraform show" ou através do Portal da Azure na opção "grupo de recursos" ou "maquinas virtuais" 
+
+
