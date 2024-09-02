@@ -79,5 +79,3 @@ resource "azurerm_data_factory_integration_runtime_self_hosted" "irsh_private" {
   name                = "irsh-private"
   data_factory_id = azurerm_data_factory.adf_privado.id
 }
-
-
