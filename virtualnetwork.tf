@@ -14,14 +14,6 @@ resource "azurerm_subnet" "subnetaz" {
   
 }
 
-resource "azurerm_public_ip" "ip_publico" {
-  name                = "public-ip"
-  sku                 = "Standard"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  allocation_method   = "Static"
-}
-
 resource "azurerm_lb" "lb_azure" {
   name                = "load-balancer"
   sku                 = "Standard"
@@ -29,8 +21,10 @@ resource "azurerm_lb" "lb_azure" {
   resource_group_name = var.resource_group_name
 
   frontend_ip_configuration {
-    name                 = azurerm_public_ip.ip_publico.name
-    public_ip_address_id = azurerm_public_ip.ip_publico.id
+    name                 = "private-frontend"
+    private_ip_address_allocation = "Static"
+    private_ip_address    = "10.0.1.4" 
+    subnet_id            = azurerm_subnet.subnetaz.id
   }
 }
 
