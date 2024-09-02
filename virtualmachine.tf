@@ -43,3 +43,29 @@ network_interface_ids = [
     version   = "latest"
   }
 }
+
+resource "azurerm_network_security_group" "nsg" {
+  name                = "security-group"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+}
+
+resource "azurerm_network_security_rule" "security_rule" {
+  name                        = "regra-de-seguranca"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.nsg.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "sg_association" {
+  subnet_id                 = azurerm_subnet.subnetaz.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
